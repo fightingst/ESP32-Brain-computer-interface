@@ -5,9 +5,16 @@ class SimpleBCI{
 		self.plotlyId = plotlyId
 		self.pinToCh=pinToChannel
 		self.channels = []
+
+		const x = tf.tensor1d([...Array(200).keys()]);
+		const real = x.sin().add(x.mul(3).sin());
+		const imag = tf.zerosLike(real);
+		const tensor = tf.complex(real, imag).fft().abs();
+		const values = tensor.dataSync();
+
 		for(var i=0;i<Object.keys(self.pinToCh).length;i++){
 			self.channels.push({
-				x:[...Array(200).keys()],y:[...Array(200).keys()],
+				x:[...Array(200).keys()],y:values,
 				mode:'lines',type:'scatter'
 			})
 		}
