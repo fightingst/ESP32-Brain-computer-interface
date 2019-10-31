@@ -1,10 +1,12 @@
 #include "SimpleESP32servers.h"
+#include "SimpleAnalogRead.h"
 #include <ArduinoJson.h>
 //==============================================
 // Global Variables
 //==============================================
 
 SimpleESP32servers simpleESP32servers;
+SimpleAnalogRead simpleAnalogRead;
 StaticJsonDocument<400> doc;
 
 //==============================================
@@ -12,23 +14,19 @@ StaticJsonDocument<400> doc;
 //==============================================
 void customHandleWebSocketsText(uint8_t * payload) {
   String message = String( (char *)payload );
-  //Serial.println(message);
-
-  if(message.startsWith("analogRead:")){
-    deserializeJson(doc,(char *)(payload+strlen("analogRead:")));
-    int pin=doc["pin"];
-    //Serial.println(pin);
-    int value=analogRead(pin);
-    String msg = String("analogRead:{")
-      +"\"pin\":"+String(pin)
-      +",\"value\":"+String(value)+"}";
-    simpleESP32servers.broadcastTXT(msg);
-    //Serial.println(msg);
-  }
-
-  else if( message.startsWith("guiData:")){
+  
+  if( message.startsWith("guiData:")){
     deserializeJson(doc,(char *)(payload+strlen("guiData:")));
+    int sampleInterval=doc["sampleInterval"];
+    int tolerance=doc["tolerance"];
+    int pin=doc["pin"];
+    int memSize=doc["memSize"];
+    simpleAnalogRead.setAll(sampleInterval, tolerance, pin, memSize);
   }
+}
+
+void analogReadWantsToBroadcastTXT(String message){
+  simpleESP32servers.broadcastTXT(message);
 }
 
 void setup(){
@@ -37,4 +35,5 @@ void setup(){
 
 void loop(){
   simpleESP32servers.runRoutine();
+  simpleAnalogRead.runRoutine();
 }
