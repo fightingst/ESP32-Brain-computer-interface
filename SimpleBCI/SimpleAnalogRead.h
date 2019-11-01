@@ -12,17 +12,19 @@ private:
   int pin, memSize;
   bool alreadyRead;
   int address;
-  int buffer[6000];
+  int myBuffer[2000];
+  unsigned long sampleTimeAxis[2000];
   String messagePrefix;
-  
-  void read();
+
   void send();
+  //void read();
 public:
   SimpleAnalogRead();
   void setAll(
     int sampleInterval, int tolerance,
     int pin, int memSize);
-  void runRoutine();
+  void runRoutineBlocking();
+  //void runRoutine();
 };
 
 #endif

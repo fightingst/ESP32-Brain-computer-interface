@@ -6,28 +6,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <body>
-	<div id="plotly"></div>
-	<div>
-		<textarea id="message" placeholder="message"></textarea>
-	</div>
-	<div id="datgui"></div>
+	<div id="signalPlot"></div>
+	<div id="dftPlot"></div>
+	<div id="filteredPlot"></div>
+	<!--div><textarea id="message"></textarea></div-->
+	<div id="guiDiv"></div>
 </body>
 
 <script type="text/javascript">
-
-const simpleBCI = new SimpleBCI("plotly","#datgui",{34:0})
+const simpleBCI = new SimpleBCI({34:0})
 try{connect()}catch{}
 
 function connect(){
 	connection = new WebSocket('ws://'+location.hostname+':81/',['arduino'])
-	connection.onopen=()=>{
-		simpleBCI.connection=connection
-	}
-	connection.onmessage=(event)=>{
+	connection.onopen=()=>{simpleBCI.connection=connection}
+	connection.onmessage=(event)=>{simpleBCI.onMessage(event.data)
 		//var message=document.querySelector("#message")
 		//nLines = message.value.match(/\n/g);  if(nLines && nLines.length>12) message.value=''
 		//message.value+=(event.data+"\n")
-		simpleBCI.onMessage(event.data)
 	}
 	connection.onclose=()=>{connect()}
 	connection.onerror=()=>{connect()}
