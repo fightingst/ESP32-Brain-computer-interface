@@ -5,9 +5,8 @@ SimpleAnalogRead::SimpleAnalogRead(){
     setAll(100,10,34,1000);
 }
 
-void SimpleAnalogRead::setAll(
-  int sampleInterval, int tolerance,
-  int pin, int memSize){
+void SimpleAnalogRead::setAll( 
+  int sampleInterval,int pin, int memSize){
 
   alreadyRead=false;
   address=0;

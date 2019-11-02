@@ -18,10 +18,9 @@ void customHandleWebSocketsText(uint8_t * payload) {
   if ( message.startsWith("guiData:")) {
     deserializeJson(doc, (char *)(payload + strlen("guiData:")));
     int sampleInterval = doc["sampleInterval"];
-    int tolerance = doc["tolerance"];
     int pin = doc["pin"];
     int memSize = doc["memSize"];
-    simpleAnalogRead.setAll(sampleInterval, tolerance, pin, memSize);
+    simpleAnalogRead.setAll(sampleInterval, pin, memSize);
   }
 }
 

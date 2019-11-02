@@ -8,7 +8,7 @@ void analogReadWantsToBroadcastTXT(String message);
 
 class SimpleAnalogRead{
 private:
-  int sampleInterval, tolerance;
+  int sampleInterval;
   int pin, memSize;
   bool alreadyRead;
   int address;
@@ -21,8 +21,7 @@ private:
 public:
   SimpleAnalogRead();
   void setAll(
-    int sampleInterval, int tolerance,
-    int pin, int memSize);
+    int sampleInterval, int pin, int memSize);
   void runRoutineBlocking();
   //void runRoutine();
 };
