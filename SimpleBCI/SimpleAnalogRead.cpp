@@ -2,7 +2,7 @@
 #include "SimpleAnalogRead.h"
 
 SimpleAnalogRead::SimpleAnalogRead(){
-    setAll(100,10,34,1000);
+    setAll(100,34,1000);
 }
 
 void SimpleAnalogRead::setAll( 
@@ -11,7 +11,6 @@ void SimpleAnalogRead::setAll(
   alreadyRead=false;
   address=0;
   this->sampleInterval=sampleInterval;
-  this->tolerance=tolerance;
   this->pin=pin;
   this->memSize=memSize;
   messagePrefix= String("analogRead:{")

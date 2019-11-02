@@ -15,9 +15,9 @@ class SimpleBCI{
 		self.guiData={
 			sampleInterval:100,memSize:1000,
 			fMax:100,
-			typeFilt:'lowPass',fLowFilt:40,fHighFilt:100,
+			typeFilt:'lowPass',fLowFilt:30,fHighFilt:100,
 			pin:34,
-			test:true,testFreq:66}
+			test:true,testFreq:50}
 		self.gui=new dat.GUI()
 		self.gui.add(self.guiData,'sampleInterval',50,1000)
 			.step(10).onFinishChange(()=>self.guiChange())
@@ -64,25 +64,27 @@ class SimpleBCI{
 		self.channels[ch].x=self.tAxis
 		self.channels[ch].y=values
 		Plotly.newPlot(self.signalPlot,self.channels)
-		signal.getDft(values,(dft)=>{
-			self.channelsDft[ch].x=self.fAxis.slice(0,self.fAxisSliceN)
-			self.channelsDft[ch].y=dft.slice(0,self.fAxisSliceN)
-			Plotly.newPlot(self.dftPlot,self.channelsDft)
-		})
 		signal.filter(self.guiData.typeFilt,
 			self.guiData.fHighFilt,
 			self.guiData.fLowFilt,(filtered)=>{
 			self.channelsFiltered[ch].x=self.tAxis
 			self.channelsFiltered[ch].y=filtered
 			Plotly.newPlot(self.filteredPlot,self.channelsFiltered)
+			signal.getDft(filtered,(dft)=>{
+				self.channelsDft[ch].x=self.fAxis.slice(0,self.fAxisSliceN)
+				self.channelsDft[ch].y=dft.slice(0,self.fAxisSliceN)
+				Plotly.newPlot(self.dftPlot,self.channelsDft)
+			})
 		})
 	}
 }
 
 class Signal{
 	constructor(values,tAxis){
-		var self=this; self.values=values
-		self.tAxis=tAxis; self.N=tAxis.length
+		var self=this; var sum=0; self.N=values.length
+		for(var i=0;i<self.N;i++) sum+=values[i]
+		self.values=values.map(value=>value-sum/self.N)
+		self.tAxis=tAxis
 	}
 
 	getDft(values,callback){
