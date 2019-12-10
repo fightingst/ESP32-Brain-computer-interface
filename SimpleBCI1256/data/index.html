@@ -18,7 +18,7 @@ const simpleBCI = new SimpleBCI({34:0,33:1})
 try{connect()}catch{}
 
 function connect(){
-	connection = new WebSocket('ws://'+location.hostname+':81/',['arduino'])
+	connection = new WebSocket('ws://192.168.4.1:81/',['arduino'])
 	connection.onopen=()=>{simpleBCI.connection=connection}
 	connection.onmessage=(event)=>{simpleBCI.onMessage(event.data)
 		//var message=document.querySelector("#message")

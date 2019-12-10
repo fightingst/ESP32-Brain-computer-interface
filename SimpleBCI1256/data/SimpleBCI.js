@@ -9,8 +9,10 @@ class SimpleBCI{
 		self.pinToCh=pinToChannel
 
 		self.connection=null
-		self.channels=[{}]; self.channelsDft=[{}]
-		self.channelsFiltered=[{}]
+		self.channels=[]
+		for(var i=0;i<16;i++) self.channels.push({})
+		self.channelsDft=self.channels
+		self.channelsFiltered=self.channels
 
 		self.guiData={
 			sampleInterval:100,memSize:1000,
@@ -53,9 +55,10 @@ class SimpleBCI{
 	}
 
 	onMessage(msg){
-		var self = this; console.log(msg)
-		var data=JSON.parse(msg.split('analogRead:')[1])
-		self.analyse(self.pinToCh[data.pin],data.values)
+		var self = this
+		var data=JSON.parse(msg); console.log(data)
+		var ch
+		if(data.chip2) for(ch=0;ch<8;ch++) self.analyse(ch,data.chip2[ch])
 	}
 
 	analyse(ch,values){

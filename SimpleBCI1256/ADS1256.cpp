@@ -4,7 +4,7 @@ ADS1256::ADS1256(
   int CLK,int CS,int READY, int SYNC, int RESET,
   int spiSpeed, String chipId){
 
-  setAll(1000,1000);
+  setAll(1000,100);
   clk=CLK;cs=CS;dtReady=READY;sync=SYNC;reset=RESET;
   this->spiSpeed=spiSpeed; this->chipId=chipId;
   ledcSetup(0,8000000,1);//channel,frequency,resolution
@@ -81,25 +81,17 @@ void ADS1256::runRoutineBlocking(){
   send();
 }
 
-void ADS1256::sendJson(){
-  String message=chipId+":{";
-  for(int ch=0;ch<8;ch++){
-    message+='\"ch'+String(ch)+'\":[';
-    for(int t=0;t<memSize-1;t++){
-      message+=(String(adcRaws[ch][t])+",");
-    }
-    message+=(String(adcRaws[ch][memSize-1])+"]},");
-  }
-  ADS1256WantsToBroadcastTXT(message);
-}
-
+//"{\"chip2\":[[1,2,3],[4,5,6]]}"
 void ADS1256::send(){
-  String message="\n"+chipId+"\n";
-  for(int t=0;t<memSize-1;t++){
-    for(int ch=0;ch<8;ch++){
-      message+=(String(adcRaws[ch][t])+" ");
+  String message=String("{\"")+chipId+"\":[";
+  for(int ch=0;ch<8;ch++){
+    message+="[";
+    for(int n=0;n<memSize;n++){
+      message+=String(adcRaws[ch][n]);
+      if(n!=memSize-1) message+=","; else message+="]";
     }
-    message+="\n";
+    if(ch!=7) message+=",";
   }
-  ADS1256WantsToBroadcastTXT(message);
+  Serial.println(message);
+  ADS1256WantsToBroadcastTXT(message+"]}");
 }
