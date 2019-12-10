@@ -1,0 +1,31 @@
+<script type="text/javascript" src="./libraries/dat.gui.min.js"></script>
+<script type="text/javascript" src="./libraries/plotly-basic.min.js"></script>
+<script type="text/javascript" src="./libraries/tf.min.js"></script>
+<script type="text/javascript" src="./SimpleBCI.js"></script>
+<link rel="stylesheet" type="text/css" href="./main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+	<div id="signalPlot"></div>
+	<div id="filteredPlot"></div>
+	<div id="dftPlot"></div>
+	<!--div><textarea id="message"></textarea></div-->
+	<div id="guiDiv"></div>
+</body>
+
+<script type="text/javascript">
+const simpleBCI = new SimpleBCI({34:0})
+try{connect()}catch{}
+
+function connect(){
+	connection = new WebSocket('ws://'+location.hostname+':81/',['arduino'])
+	connection.onopen=()=>{simpleBCI.connection=connection}
+	connection.onmessage=(event)=>{simpleBCI.onMessage(event.data)
+		//var message=document.querySelector("#message")
+		//nLines = message.value.match(/\n/g);  if(nLines && nLines.length>12) message.value=''
+		//message.value+=(event.data+"\n")
+	}
+	connection.onclose=()=>{connect()}
+	connection.onerror=()=>{connect()}
+}
+</script>
