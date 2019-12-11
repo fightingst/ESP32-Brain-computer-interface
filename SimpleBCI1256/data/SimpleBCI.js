@@ -15,15 +15,15 @@ class SimpleBCI{
 		self.channelsFiltered=self.channels
 
 		self.guiData={
-			sampleInterval:100,memSize:1000,
+			sampleInterval:1000,memSize:200,
 			fMax:100,
 			typeFilt:'lowPass',fLowFilt:30,fHighFilt:100,
 			pin:34,
 			test:true,testFreq:50}
 		self.gui=new dat.GUI()
-		self.gui.add(self.guiData,'sampleInterval',50,1000)
+		self.gui.add(self.guiData,'sampleInterval',500,10000)
 			.step(10).onFinishChange(()=>self.guiChange())
-		self.gui.add(self.guiData,'memSize',100,2000)
+		self.gui.add(self.guiData,'memSize',100,1000)
 			.step(100).onFinishChange(()=>self.guiChange())
 		self.gui.add(self.guiData,'fMax',50,300)
 			.step(1).onFinishChange(()=>self.guiChange())
@@ -66,17 +66,17 @@ class SimpleBCI{
 		var signal=new Signal(values,self.tAxis)
 		self.channels[ch].x=self.tAxis
 		self.channels[ch].y=values
-		Plotly.newPlot(self.signalPlot,self.channels)
+		//Plotly.react(self.signalPlot,self.channels)
 		signal.filter(self.guiData.typeFilt,
 			self.guiData.fHighFilt,
 			self.guiData.fLowFilt,(filtered)=>{
 			self.channelsFiltered[ch].x=self.tAxis
 			self.channelsFiltered[ch].y=filtered
-			Plotly.newPlot(self.filteredPlot,self.channelsFiltered)
+			Plotly.react(self.filteredPlot,self.channelsFiltered)
 			signal.getDft(filtered,(dft)=>{
 				self.channelsDft[ch].x=self.fAxis.slice(0,self.fAxisSliceN)
 				self.channelsDft[ch].y=dft.slice(0,self.fAxisSliceN)
-				Plotly.newPlot(self.dftPlot,self.channelsDft)
+				Plotly.react(self.dftPlot,self.channelsDft)
 			})
 		})
 	}

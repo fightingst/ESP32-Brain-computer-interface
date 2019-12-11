@@ -18,14 +18,15 @@ const simpleBCI = new SimpleBCI({34:0,33:1})
 try{connect()}catch{}
 
 function connect(){
-	connection = new WebSocket('ws://192.168.4.1:81/',['arduino'])
-	connection.onopen=()=>{simpleBCI.connection=connection}
+	console.log("trying to connect!")
+	connection = new WebSocket('ws://192.168.4.1:81')//,['arduino'])
+	connection.onopen=()=>{simpleBCI.connection=connection;console.log("opened")}
 	connection.onmessage=(event)=>{simpleBCI.onMessage(event.data)
 		//var message=document.querySelector("#message")
 		//nLines = message.value.match(/\n/g);  if(nLines && nLines.length>12) message.value=''
 		//message.value+=(event.data+"\n")
 	}
-	connection.onclose=()=>{connect()}
-	connection.onerror=()=>{connect()}
+	connection.onclose=()=>{console.log("closed");connect()}
+	connection.onerror=()=>{console.log("error");connect()}
 }
 </script>
