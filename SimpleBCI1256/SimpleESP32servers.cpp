@@ -20,10 +20,18 @@ void SimpleESP32servers::startWiFiAndServers(
 
     SPIFFS.begin();
 
-    WiFi.softAP(WiFiID,WiFiPassword);
-    while(WiFi.softAPgetStationNum()<1){delay(250);}
-    //Serial.println("Connected. IP: "+WiFi.localIP());
-
+    int numberOfNetworks = WiFi.scanNetworks();
+    for(int i=0; i<numberOfNetworks;i++) Serial.println(WiFi.SSID(i));
+    WiFi.softAP("ESP32","12345678"); 
+    WiFi.begin(WiFiID,WiFiPassword); 
+    while(1){
+      if(WiFi.softAPgetStationNum()) {Serial.println("AP");break;}
+      if(WiFi.status()==WL_CONNECTED) {Serial.println("STA");break;}
+      Serial.println(WiFi.status());
+      delay(500);
+    }
+    Serial.println(WiFi.localIP());
+    
     webServer = new WebServer(80);
     webServer->on("/FileUpload.html",
                   HTTP_POST,

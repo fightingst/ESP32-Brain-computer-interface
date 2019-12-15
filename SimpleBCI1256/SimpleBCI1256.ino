@@ -30,11 +30,10 @@ void ADS1256WantsToBroadcastTXT(String message) {
 }
 
 void setup() {
-  simpleESP32servers.startWiFiAndServers("Tesla Coil Sing!", "12345678");
-  Serial.begin(115200); 
+  simpleESP32servers.startWiFiAndServers("网络存在风险","940055940505QWE");
 }
 
 void loop() {
   simpleESP32servers.runRoutine();
-  aDS1256.runRoutineBlocking();
+  if(simpleESP32servers.isConnected) aDS1256.runRoutineBlocking();
 }

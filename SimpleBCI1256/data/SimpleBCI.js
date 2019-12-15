@@ -66,13 +66,13 @@ class SimpleBCI{
 		var signal=new Signal(values,self.tAxis)
 		self.channels[ch].x=self.tAxis
 		self.channels[ch].y=values
-		//Plotly.react(self.signalPlot,self.channels)
+		Plotly.react(self.signalPlot,self.channels)
 		signal.filter(self.guiData.typeFilt,
 			self.guiData.fHighFilt,
 			self.guiData.fLowFilt,(filtered)=>{
 			self.channelsFiltered[ch].x=self.tAxis
 			self.channelsFiltered[ch].y=filtered
-			Plotly.react(self.filteredPlot,self.channelsFiltered)
+			//Plotly.react(self.filteredPlot,self.channelsFiltered)
 			signal.getDft(filtered,(dft)=>{
 				self.channelsDft[ch].x=self.fAxis.slice(0,self.fAxisSliceN)
 				self.channelsDft[ch].y=dft.slice(0,self.fAxisSliceN)

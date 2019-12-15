@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <body>
+	<div><input id="ipInput" type="text" 
+		value="192.168.2.154" onchange="connect()"/></div>
 	<div id="signalPlot"></div>
 	<div id="filteredPlot"></div>
 	<div id="dftPlot"></div>
@@ -19,7 +21,9 @@ try{connect()}catch{}
 
 function connect(){
 	console.log("trying to connect!")
-	connection = new WebSocket('ws://192.168.4.1:81')//,['arduino'])
+	var ip=document.querySelector("#ipInput").value
+	console.log(ip)
+	connection = new WebSocket('ws://'+ip+":81")//,['arduino'])
 	connection.onopen=()=>{simpleBCI.connection=connection;console.log("opened")}
 	connection.onmessage=(event)=>{simpleBCI.onMessage(event.data)
 		//var message=document.querySelector("#message")

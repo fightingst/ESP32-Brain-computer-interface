@@ -92,6 +92,6 @@ void ADS1256::send(){
     }
     if(ch!=7) message+=",";
   }
-  Serial.println(message);
+  //Serial.println(message);
   ADS1256WantsToBroadcastTXT(message+"]}");
 }
