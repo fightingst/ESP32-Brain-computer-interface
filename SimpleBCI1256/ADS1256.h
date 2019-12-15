@@ -14,7 +14,7 @@ private:
   uint8_t clk,cs,dtReady,sync,reset; //pins
   uint32_t spiSpeed; String chipId;
   SPIClass* spi;
-  unsigned long adcRaws[8][2000];
+  long adcRaws[8][2000];
   byte channels[8]={0x08,0x18,0x28,0x38,0x48,0x58,0x68,0x78};
   void adcRead(int n);
   void send(); void sendJson();

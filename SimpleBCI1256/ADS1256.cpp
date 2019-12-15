@@ -7,7 +7,7 @@ ADS1256::ADS1256(
   setAll(1000,100);
   clk=CLK;cs=CS;dtReady=READY;sync=SYNC;reset=RESET;
   this->spiSpeed=spiSpeed; this->chipId=chipId;
-  ledcSetup(0,8000000,1);//channel,frequency,resolution
+  ledcSetup(0,7680000,1);//channel,frequency,resolution
   ledcAttachPin(clk,0);//pin,channel
   ledcWrite(0,1); delay(1); //channel,dutyCycle
   pinMode(cs,OUTPUT); digitalWrite(cs,LOW);
@@ -41,7 +41,7 @@ ADS1256::ADS1256(
 
 void ADS1256::adcRead(int n){
   spi->beginTransaction(SPISettings(spiSpeed,MSBFIRST,SPI_MODE1));
-  digitalWrite(cs,LOW);
+  digitalWrite(cs,LOW); delayMicroseconds(2);
   for(int ch=0;ch<8;ch++){
     while(digitalRead(dtReady)){}
     spi->transfer(0x50|0x01); spi->transfer(0x00);
@@ -49,11 +49,12 @@ void ADS1256::adcRead(int n){
     spi->transfer(0xFC); delayMicroseconds(2);
     spi->transfer(0x00); delayMicroseconds(250);
     spi->transfer(0x01); delayMicroseconds(5);
-    adcRaws[ch][n]=spi->transfer(0); adcRaws[ch][n]<<8;
-    adcRaws[ch][n]=spi->transfer(0); adcRaws[ch][n]<<8;
-    adcRaws[ch][n]=spi->transfer(0); delayMicroseconds(2);
-    //2's complement
-    if(adcRaws[ch][n]>0x7fffff) adcRaws[ch][n]-=0x1000000;
+    long x;
+    x=spi->transfer(0);  x<<=8;               
+    x|=spi->transfer(0); x<<=8;               
+    x|=spi->transfer(0); delayMicroseconds(2);
+    if(x>0x7fffff) x-=16777216; //2's complement
+    adcRaws[ch][n]=x;
   }
   digitalWrite(cs,HIGH); spi->endTransaction();
   /*Serial.print("time:"); Serial.println(sampleTimeAxis[n]);
@@ -90,8 +91,7 @@ void ADS1256::send(){
       message+=String(adcRaws[ch][n]);
       if(n!=memSize-1) message+=","; else message+="]";
     }
-    if(ch!=7) message+=",";
+    if(ch!=7) message+=","; else message+="]";
   }
-  //Serial.println(message);
-  ADS1256WantsToBroadcastTXT(message+"]}");
+  ADS1256WantsToBroadcastTXT(message+"}");
 }

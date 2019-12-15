@@ -7,7 +7,7 @@
 
 SimpleESP32servers simpleESP32servers;
 //ADS1256(int CLK,int CS,int READY, int SYNC, int RESET,int spiSpeed, String chipId);
-ADS1256 aDS1256(17,15,2,4,16,2000000, "chip2");
+ADS1256 aDS1256(17,15,2,4,16,1700000, "chip2");
 StaticJsonDocument<400> doc;
 
 //==============================================
@@ -26,7 +26,7 @@ void customHandleWebSocketsText(uint8_t * payload) {
 
 void ADS1256WantsToBroadcastTXT(String message) {
   simpleESP32servers.broadcastTXT(message);
-  //Serial.println(message);
+  Serial.println(message);
 }
 
 void setup() {

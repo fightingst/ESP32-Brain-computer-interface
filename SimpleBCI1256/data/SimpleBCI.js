@@ -19,7 +19,8 @@ class SimpleBCI{
 			fMax:100,
 			typeFilt:'lowPass',fLowFilt:30,fHighFilt:100,
 			pin:34,
-			test:true,testFreq:50}
+			test:true,testFreq:50,
+			yScale:21}
 		self.gui=new dat.GUI()
 		self.gui.add(self.guiData,'sampleInterval',500,10000)
 			.step(10).onFinishChange(()=>self.guiChange())
@@ -36,6 +37,8 @@ class SimpleBCI{
 		self.gui.add(self.guiData,'test')
 			.onFinishChange(()=>self.guiChange())
 		self.gui.add(self.guiData,'testFreq',1,200)
+			.step(1).onFinishChange(()=>self.guiChange())
+		self.gui.add(self.guiData,'yScale',1,24)
 			.step(1).onFinishChange(()=>self.guiChange())
 		self.guiChange()
 	}
@@ -63,10 +66,11 @@ class SimpleBCI{
 
 	analyse(ch,values){
 		var self=this
-		var signal=new Signal(values,self.tAxis)
-		self.channels[ch].x=self.tAxis
-		self.channels[ch].y=values
-		Plotly.react(self.signalPlot,self.channels)
+		//var signal=new Signal(values,self.tAxis)
+		self.channels[ch].x=self.tAxis; self.channels[ch].y=values
+		var layout={yaxis:{range:[0,Math.pow(2,self.guiData.yScale)]}}
+		Plotly.react(self.signalPlot,self.channels,layout)
+		/*
 		signal.filter(self.guiData.typeFilt,
 			self.guiData.fHighFilt,
 			self.guiData.fLowFilt,(filtered)=>{
@@ -79,6 +83,7 @@ class SimpleBCI{
 				Plotly.react(self.dftPlot,self.channelsDft)
 			})
 		})
+		*/
 	}
 }
 
