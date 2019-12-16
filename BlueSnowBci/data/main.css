@@ -1,0 +1,14 @@
+*{
+	font: italic bold 16px cursive;
+}
+
+textarea {
+	font: bold 16px cursive;
+	color: deepskyblue;
+	height: 300px;
+	width: 300px;
+	border: 2px solid pink;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 10px auto;
+}

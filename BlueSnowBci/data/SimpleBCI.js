@@ -15,15 +15,15 @@ class SimpleBCI{
 		self.channelsFiltered=self.channels
 
 		self.guiData={
-			sampleInterval:10000,memSize:100,
+			sampleFreq:200,memSize:100,
 			fMax:100,
 			typeFilt:'lowPass',fLowFilt:20,fHighFilt:100,
 			test:true,testFreq:50,
 			yScale:23}
 		self.gui=new dat.GUI()
-		self.gui.add(self.guiData,'sampleInterval',500,10000)
+		self.gui.add(self.guiData,'sampleFreq',20,1000)
 			.step(10).onFinishChange(()=>self.guiChange())
-		self.gui.add(self.guiData,'memSize',100,1000)
+		self.gui.add(self.guiData,'memSize',20,1000)
 			.step(100).onFinishChange(()=>self.guiChange())
 		self.gui.add(self.guiData,'fMax',50,300)
 			.step(1).onFinishChange(()=>self.guiChange())
@@ -46,7 +46,7 @@ class SimpleBCI{
 		var self = this
 		if(self.connection) self.connection.send(
 			"guiData:"+JSON.stringify(self.guiData))
-		self.dt=self.guiData.sampleInterval/1e6
+		self.dt=1/self.guiData.sampleFreq
 		self.N=self.guiData.memSize
 		self.nAxis=[...Array(self.N).keys()]
 		self.tAxis=self.nAxis.map(n=>n*self.dt)
@@ -66,8 +66,9 @@ class SimpleBCI{
 	analyse(ch,values){
 		var self=this
 		var signal=new Signal(values,self.tAxis)
-		var layout={yaxis:{range:[0,Math.pow(2,self.guiData.yScale)]}}
-		//self.channels[ch].x=self.tAxis; self.channels[ch].y=values
+		var range = Math.pow(2,self.guiData.yScale)
+		var layout={yaxis:{range:[-range,range]}}
+		self.channels[ch].x=self.tAxis; self.channels[ch].y=values
 		//Plotly.react(self.signalPlot,self.channels,layout)
 
 		signal.filter(self.guiData.typeFilt,
@@ -90,7 +91,7 @@ class Signal{
 	constructor(values,tAxis){
 		var self=this; var sum=0; self.N=values.length
 		for(var i=0;i<self.N;i++) sum+=values[i]
-		self.values=values.map(value=>value-sum/self.N)
+		self.values=values//.map(value=>value-sum/self.N)
 		self.tAxis=tAxis
 	}
 
