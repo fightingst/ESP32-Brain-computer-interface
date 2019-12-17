@@ -28,7 +28,7 @@ void Ads::fillMemAndSend(){
 
 void Ads::init(int clk,int cs,int dtReady,int sync,
 int reset,int spiSpeed,String chipId){
-  setAll(200,100);
+  setAll(1000,100);
   this->cs=cs; this->dtReady=dtReady;
   this->spiSpeed=spiSpeed; this->chipId=chipId;
   ledcSetup(0,8000000,1); ledcAttachPin(clk,0); ledcWrite(0,1);

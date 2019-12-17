@@ -2,7 +2,7 @@
 class BlueSnowBci{
   constructor(){
     var self=this
-    self.settings={esp32Ws:'192.168.2.154:81'}
+    self.settings={esp32Ws:'192.168.2.154:81',deltaT:100}
     const app=require('express')()
     const jsonParser=require('body-parser').json()
     app.get('/',(req,res)=>{res.sendFile(__dirname+'/client/index.html')})
@@ -17,12 +17,12 @@ class BlueSnowBci{
     esp32Client.on('connect',(connection)=>{
       self.connection=connection
       connection.on('message',(message)=>{
-        self.record("esp32",message.utf8Data)
+        self.record("esp32",JSON.parse(message.utf8Data))
       })
     }).connect("ws://"+self.settings.esp32Ws)
 
     self.ioHook=require('iohook').on("keypress",(e)=>{
-      self.record("keypress",e.rawcode)
+      self.record("keypress",{code:e.rawcode})
     }).start()
   }
 
@@ -42,18 +42,37 @@ class BlueSnowBci{
   }
 
   record(key,item){
-    var self=this
-    // to do: create time stamp!
-    if(key=='esp32'){self.currentEsp32msg=item
-       process.stdout.write(".")
+    var self=this; if(key=="esp32") self.currentEsp32msg=item
+    item.date=new Date()
+    var fs = require('fs').appendFile(
+      "dt/"+key,JSON.stringify(item)+"\n",(e)=>{})
+  }
+
+  recordPair(key,item){
+    var self=this; if(key=="esp32") self.currentEsp32msg=item
+    var date=new Date()
+    if(self.lastTime) var diff=Math.abs(date-self.lastTime)
+    self.lastTime=date
+    // state machine
+    if(!self.rec) self.rec={}; if(!self.state) self.state="idle"
+    if(self.state=="idle" && key=="esp32"){
+      self.rec.esp32="..."; self.state="esp32done"
     }
+    else if(self.state=="esp32done" && key=="keypress"){
+      if(diff<self.settings.deltaT){
+        self.rec.keypress=item; self.rec.diff=diff
+        self.rec.date=date; console.log(self.rec)
+      }
+      self.state="idle"; self.rec=null
+    }
+    console.log(self.state+"  "+diff)
   }
 
   analyse(options,esp32msg,callback){
     var self=this
     const spawn=require("child_process").spawn
     const py=spawn('python3',["minAnalyse.py",
-      JSON.stringify(options),esp32msg])
+      JSON.stringify(options),JSON.stringify(esp32msg)])
       .stdout.on('data',(buffer)=>{callback(buffer)})
   }
 }
