@@ -24,6 +24,8 @@ class BlueSnowBci{
     self.ioHook=require('iohook').on("keypress",(e)=>{
       self.record("keypress",{code:e.rawcode})
     }).start()
+
+    self.fs=require('fs')
   }
 
   handleReq(req,res){
@@ -41,14 +43,14 @@ class BlueSnowBci{
     }
   }
 
-  record(key,item){
+  record1(key,item){
     var self=this; if(key=="esp32") self.currentEsp32msg=item
-    item.date=new Date()
-    var fs = require('fs').appendFile(
+    item.date=new Date(); console.log(".")
+    self.fs.appendFile(
       "dt/"+key,JSON.stringify(item)+"\n",(e)=>{})
   }
 
-  recordPair(key,item){
+  record(key,item){
     var self=this; if(key=="esp32") self.currentEsp32msg=item
     var date=new Date()
     if(self.lastTime) var diff=Math.abs(date-self.lastTime)
@@ -56,16 +58,18 @@ class BlueSnowBci{
     // state machine
     if(!self.rec) self.rec={}; if(!self.state) self.state="idle"
     if(self.state=="idle" && key=="esp32"){
-      self.rec.esp32="..."; self.state="esp32done"
+      self.rec.esp32=item; self.state="esp32done"
     }
     else if(self.state=="esp32done" && key=="keypress"){
       if(diff<self.settings.deltaT){
         self.rec.keypress=item; self.rec.diff=diff
-        self.rec.date=date; console.log(self.rec)
+        self.rec.date=date; console.log("+")
+        self.fs.appendFile(
+          "dt/"+"pair",JSON.stringify(self.rec)+"\n",(e)=>{})
       }
       self.state="idle"; self.rec=null
     }
-    console.log(self.state+"  "+diff)
+    console.log(".")
   }
 
   analyse(options,esp32msg,callback){
