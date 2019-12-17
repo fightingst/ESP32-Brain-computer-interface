@@ -12,16 +12,23 @@ listener=keyboard.Listener(on_press=on_press).start()
 import websockets; import json
 import numpy as np
 from scipy import signal,fftpack
+import pyqtgraph as pg
 
 uri="ws://192.168.2.154:81"
 b,a=signal.iirnotch(50,30,1000)
+plotWidget = pg.plot(title="filtered")
+x = np.arange(100)
+
+async def plot(y):
+    for i in range(8):
+        plotWidget.plot(x, y[i], pen=(i,8))
 
 async def analyse(msg):
     m= json.loads(msg)
     filtered=signal.filtfilt(b,a,m["data"])
-    print("filtered")
     ffted=np.abs(fftpack.fft(m["data"]))
-    print("ffted")
+    print("anal")
+    await plot(filtered)
 
 async def wsRoutine():
     async with websockets.connect(uri) as ws:
@@ -29,7 +36,7 @@ async def wsRoutine():
             msg = await ws.recv()
             await analyse(msg)
 
-
+######################## main ########################
 async def main():
     await asyncio.gather(wsRoutine())
 asyncio.run(main())
