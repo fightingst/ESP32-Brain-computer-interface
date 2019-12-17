@@ -3,9 +3,11 @@ class BlueSnowBci{
   constructor(){
     var self=this
     self.settings={esp32Ws:'192.168.2.154:81',deltaT:100}
-    const app=require('express')()
+    const express = require("express")
+    const app=express()
     const jsonParser=require('body-parser').json()
     app.get('/',(req,res)=>{res.sendFile(__dirname+'/client/index.html')})
+    app.use(express.static(__dirname + '/client'))
     app.post('/',jsonParser,(req,res)=>{self.handleReq(req,res)})
     app.listen(3000,'localhost',()=>console.log("http://localhost:3000"))
 

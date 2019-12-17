@@ -1,10 +1,26 @@
-<div id="demo"></div>
+<script type="text/javascript" src="plotly-basic.min.js"></script>
+<div id="filteredPlot"></div>
+<div id="dftPlot"></div>
 <script>
+  var channelsDft=[]; var ch
+  for(ch=0;ch<8;ch++) channelsDft[ch]={y:[...Array(1000).keys()]}
+  console.log(channelsDft)
+  var channelsFiltered=channelsDft
   var xhttp=new XMLHttpRequest()
   xhttp.onreadystatechange=function(){
     if(this.readyState==4 && this.status==200){
       //document.getElementById("demo").innerHTML=this.responseText
-      console.log(this.responseText)
+      var res=JSON.parse(this.responseText); console.log(res)
+      var dt=1/res.sampleFreq; console.log(dt)
+      var N=res.ffted[0].length; console.log(N)
+      var nAxis=[...Array(N).keys()], tAxis=nAxis.map(n=>n*dt),
+          fAxis=nAxis.map(n=>n/(2*N*dt))
+      var ch; for(ch=0;ch<1;ch++){
+        //channelsDft[ch]={x:fAxis,y:res.ffted[ch]}
+        channelsFiltered[ch].y=channelsFiltered[ch].y.slice(N).concat(res.filtered[ch])
+      }
+      //Plotly.react("dftPlot",channelsDft)
+      Plotly.react("filteredPlot",channelsFiltered)
     }
   }
 

@@ -8,7 +8,8 @@ def analyse():
     b,a=signal.iirnotch(o["f0"],o["Q"],o["fs"])
     filtered=signal.filtfilt(b,a,m["data"]).tolist()
     ffted=np.abs(fft(m["data"])).tolist()
-    send({"filtered":filtered,"ffted":ffted})
+    send({"filtered":filtered,"ffted":ffted,
+        "sampleFreq":m["sampleFreq"]})
 
 try:
     import sys; import json; import numpy as np
