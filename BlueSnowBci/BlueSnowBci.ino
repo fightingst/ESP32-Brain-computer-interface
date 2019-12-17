@@ -22,7 +22,7 @@ void AdsWantsToBroadcastTXT(String message){
 
 void setup(){
   minServer.connectWifi("网络存在风险","940055940505QWE");
-  ads.init(17,15,2,4,16,2000000,"chip2");
+  ads.init(17,15,2,4,16,2000000,"2");
   ArduinoOTA.begin();
 }
 

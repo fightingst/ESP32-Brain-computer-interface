@@ -12,7 +12,9 @@ void Ads::fillMemAndSend(){
   while(n<memSize){
     if(micros()-start>sampleTimeAxis[n]) adsRead(n++);
   }
-  String message=String("{\"")+chipId+"\":[";
+  String message=String("{\"chipId\":")+chipId
+                       +",\"sampleFreq\":"+String(sampleFreq)
+                       +",\"data\":[";
   for(int ch=0;ch<8;ch++){ message+="[";
     for(n=0;n<memSize;n++){
       message+=String(adcRaws[ch][n]); 
