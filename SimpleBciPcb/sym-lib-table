@@ -1,4 +1,0 @@
-(sym_lib_table
-  (lib (name SimpleBci)(type Legacy)(uri ${KIPRJMOD}/SimpleBci.lib)(options "")(descr ""))
-  (lib (name SimpleBci2)(type Legacy)(uri ${KIPRJMOD}/SimpleBci2.lib)(options "")(descr ""))
-)

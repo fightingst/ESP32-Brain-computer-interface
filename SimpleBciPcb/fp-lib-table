@@ -1,3 +1,0 @@
-(fp_lib_table
-  (lib (name SimpleBciPcb)(type KiCad)(uri ${KIPRJMOD}/SimpleBciPcb.pretty)(options "")(descr ""))
-)
