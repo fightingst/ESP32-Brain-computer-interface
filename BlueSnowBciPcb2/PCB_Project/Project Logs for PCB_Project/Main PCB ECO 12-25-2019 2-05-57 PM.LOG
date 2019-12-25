@@ -1,0 +1,24 @@
+Change Component Designator: OldDesignator=AMS1117_? NewDesignator=AMS1
+Change Component Designator: OldDesignator=BAT? NewDesignator=BAT1
+Change Component Designator: OldDesignator=C? NewDesignator=C1
+Change Component Designator: OldDesignator=C? NewDesignator=C2
+Change Component Designator: OldDesignator=ESP32-WROOM-32D? NewDesignator=ESP1
+Change Component Designator: OldDesignator=IC? NewDesignator=IC1
+Change Component Designator: OldDesignator=P? NewDesignator=P1
+Change Component Designator: OldDesignator=P? NewDesignator=P2
+Change Component Designator: OldDesignator=REF3025_? NewDesignator=REF1
+Change Net Name : Old Net Name=NetBAT?_VOUT New Net Name=NetBAT1_VOUT
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_1 New Net Name=NetESP1_1
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_8 New Net Name=NetESP1_8
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_9 New Net Name=NetESP1_9
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_10 New Net Name=NetESP1_10
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_11 New Net Name=NetESP1_11
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_12 New Net Name=NetESP1_12
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_13 New Net Name=NetESP1_13
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_14 New Net Name=NetESP1_14
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_16 New Net Name=NetESP1_16
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_25 New Net Name=NetESP1_25
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_34 New Net Name=NetESP1_34
+Change Net Name : Old Net Name=NetESP32-WROOM-32D?_35 New Net Name=NetESP1_35
+Added Member To Class: ClassName=Main Member=Component C2 C
+Added Member To Class: ClassName=Main Member=Component P1 Header 3

@@ -1,0 +1,12 @@
+Added Pin To Net: NetName=NetESP1_8 Pin=ESP1-8
+Added Pin To Net: NetName=NetESP1_8 Pin=IC1-15
+Added Net: Name=NetESP1_8
+Added Pin To Net: NetName=NetESP1_9 Pin=ESP1-9
+Added Pin To Net: NetName=NetESP1_9 Pin=IC1-19
+Added Net: Name=NetESP1_9
+Added Pin To Net: NetName=NetESP1_10 Pin=ESP1-10
+Added Pin To Net: NetName=NetESP1_10 Pin=IC1-20
+Added Net: Name=NetESP1_10
+Added Pin To Net: NetName=NetESP1_11 Pin=ESP1-11
+Added Pin To Net: NetName=NetESP1_11 Pin=IC1-21
+Added Net: Name=NetESP1_11
