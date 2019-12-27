@@ -1,5 +1,0 @@
-Removed Pin From Net: NetName=NetESP1_6 Pin=R2-2
-Added Pin To Net: NetName=NetESP1_6 Pin=R1-2
-Added Pin To Net: NetName=NetESP1_5 Pin=ESP1-5
-Added Pin To Net: NetName=NetESP1_5 Pin=R2-2
-Added Net: Name=NetESP1_5

@@ -1,3 +1,0 @@
-Change Component Footprint: Designator=P2 Old Footprint=4P New Footprint=HDR1X5
-Change Component Comment : Designator=P2 Old Comment=Header 4 New Comment=Header 5
-Added Pin To Net: NetName=3V3 Pin=P2-5
