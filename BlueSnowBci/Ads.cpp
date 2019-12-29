@@ -36,7 +36,7 @@ int reset,int spiSpeed,String chipId){
   pinMode(sync,OUTPUT); digitalWrite(sync,HIGH);
   pinMode(reset,OUTPUT); digitalWrite(reset,LOW);
   delay(1); digitalWrite(reset,HIGH); delay(500);
-  spi=new SPIClass(VSPI); spi->begin(); delay(500);
+  spi=new SPIClass(HSPI); spi->begin(); delay(500);
   while(digitalRead(dtReady)){}
 
   spi->beginTransaction(SPISettings(spiSpeed,MSBFIRST,SPI_MODE1));

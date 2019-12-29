@@ -9,10 +9,9 @@ void MinServer::runRoutine(){
 
 void MinServer::connectWifi(char* id,char* password){
   Serial.begin(115200); wsConnected=false;
-  WiFi.softAP("MinServer","MinServer");
+  WiFi.softAP("fuck","12345678");
   WiFi.begin(id,password);
-  while(!(WiFi.softAPgetStationNum()||
-          WiFi.status()==WL_CONNECTED)){}
+  while(!(WiFi.softAPgetStationNum()||WiFi.status()==WL_CONNECTED)){}
   Serial.println(WiFi.localIP());
   webSocketsServer=new WebSocketsServer(81);
   webSocketsServer->begin();

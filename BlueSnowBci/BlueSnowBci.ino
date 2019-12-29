@@ -21,12 +21,16 @@ void AdsWantsToBroadcastTXT(String message){
 }
 
 void setup(){
+  Serial.begin(115200);
   minServer.connectWifi("网络存在风险","940055940505QWE");
-  ads.init(17,15,2,4,16,2000000,"2");
+  //  void init(int clk,int cs,int dtReady,int sync,
+  //  int reset,int spiSpeed,String chipId);
+  ads.init(33,25,26,27,32,2000000,"1");
   ArduinoOTA.begin();
 }
 
 void loop(){
+  Serial.println(millis()); delay(500);
   minServer.runRoutine();
   if(minServer.wsConnected) ads.fillMemAndSend();
   ArduinoOTA.handle();
