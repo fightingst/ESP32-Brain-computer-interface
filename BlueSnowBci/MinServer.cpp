@@ -9,10 +9,18 @@ void MinServer::runRoutine(){
 
 void MinServer::connectWifi(char* id,char* password){
   Serial.begin(115200); wsConnected=false;
-  WiFi.softAP("fuck","12345678");
-  WiFi.begin(id,password);
-  while(!(WiFi.softAPgetStationNum()||WiFi.status()==WL_CONNECTED)){}
-  Serial.println(WiFi.localIP());
+  /*WiFi.begin(id, password);
+  while (WiFi.status() != WL_CONNECTED) { 
+    delay(500); int n = WiFi.scanNetworks();
+    if (n == 0) Serial.println("no networks found");
+    else for (int i = 0; i < n; ++i) {
+        Serial.print(i); Serial.print(": "); Serial.print(WiFi.SSID(i)); 
+        Serial.print("\t");  Serial.println(WiFi.RSSI(i));  delay(10);
+    }  
+  }*/
+  WiFi.softAP("FUCK","YOURMOTHER");
+  Serial.print("\n IP address: "); Serial.println(WiFi.softAPIP());
+  
   webSocketsServer=new WebSocketsServer(81);
   webSocketsServer->begin();
   webSocketsServer->onEvent([this]

@@ -22,10 +22,10 @@ void AdsWantsToBroadcastTXT(String message){
 
 void setup(){
   Serial.begin(115200);
-  minServer.connectWifi("网络存在风险","940055940505QWE");
+  ads.init(33,25,26,27,32,2000000,"1");
+  minServer.connectWifi("SHAMELESS","00000000");
   //  void init(int clk,int cs,int dtReady,int sync,
   //  int reset,int spiSpeed,String chipId);
-  ads.init(33,25,26,27,32,2000000,"1");
   ArduinoOTA.begin();
 }
 

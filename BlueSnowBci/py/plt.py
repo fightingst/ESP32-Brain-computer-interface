@@ -13,13 +13,13 @@ import websockets; import json
 from scipy import signal,fftpack
 import time
 
-uri="ws://192.168.2.119:81"
+uri="ws://192.168.4.1:81"
 b,a=signal.iirnotch(50,30,1000)
 plt.ion()
 fig = plt.figure()
 ax = fig.add_subplot(111)
-x = np.linspace(0, 6*np.pi, 100)
-y = 1e6*np.sin(x)
+x = np.linspace(0, 6*np.pi, 100)[:10]
+y = 5*np.sin(x)
 line1, = ax.plot(x, y, 'r-')
 line2, = ax.plot(x, y, 'r-')
 
@@ -31,11 +31,14 @@ async def plot(y):
 """
 async def analyse(msg):
     m= json.loads(msg)
-    filtered=signal.filtfilt(b,a,m["data"])
-    ffted=np.abs(fftpack.fft(m["data"]))
+    filtered=signal.filtfilt(b,a,m["data"])/2**20-1.876
+    filtered=filtered-np.mean(filtered)
+    ffted=np.abs(fftpack.fft(filtered))
     print("anal")
-    line1.set_ydata(filtered[0])
-    line2.set_ydata(filtered[1])
+    line1.set_ydata(ffted[0][:10])
+    line2.set_ydata(ffted[1][:10]
+                    )
+    print(filtered[0][0],filtered[1][0])
     fig.canvas.draw()
     fig.canvas.flush_events()
     
